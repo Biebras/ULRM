@@ -25,12 +25,11 @@ namespace LRM
             }
         }
 
-        public async Task<bool> AuthenticateClient(string token)
+        public async Task<string> AuthenticateClient(string token)
         {
             try
             {
-                await VerifyTokenGetUid(token);
-                return true;
+                return await VerifyTokenGetUid(token);
             }
             catch (FirebaseAuthException e)
             {
@@ -56,7 +55,7 @@ namespace LRM
                 Program.WriteLogMessage("Invalid token!");
             }
 
-            return false;
+            return null;
         }
 
         private async Task<string> VerifyTokenGetUid(string token)

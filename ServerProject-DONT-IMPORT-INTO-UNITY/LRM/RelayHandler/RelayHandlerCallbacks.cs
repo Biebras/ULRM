@@ -49,22 +49,21 @@ namespace LightReflectiveMirror
                             Program.transport.ServerDisconnect(clientId);
                         }
 
+                        // Check client's Firebase token
+                        var authenticatedUniqueId = await _authenticator.AuthenticateClient(firebaseToken);
+                        if (authenticatedUniqueId == null)
+                        {
+                            Program.WriteLogMessage($"Client {clientId} failed Firebase authentication! Removing from LRM node.");
+                            Program.transport.ServerDisconnect(clientId);
+                            return;
+                        }
                         // Later retrieve firebase id from firebase token
-                        string uniqueId = firebaseToken;
+                        string uniqueId = authenticatedUniqueId;
                         
                         // Check if the client is already connected to this node.
                         if (Program.instance.IsClientConnected(uniqueId))
                         {
                             Program.WriteLogMessage($"Client {clientId} is already connected to this node! Removing from LRM node.");
-                            Program.transport.ServerDisconnect(clientId);
-                            return;
-                        }
-
-                        // Check client's Firebase token
-                        var authenticated = await _authenticator.AuthenticateClient(firebaseToken);
-                        if (!authenticated)
-                        {
-                            Program.WriteLogMessage($"Client {clientId} failed Firebase authentication! Removing from LRM node.");
                             Program.transport.ServerDisconnect(clientId);
                             return;
                         }

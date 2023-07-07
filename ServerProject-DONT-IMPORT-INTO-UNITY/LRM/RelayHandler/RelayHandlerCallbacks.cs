@@ -25,7 +25,7 @@ namespace LightReflectiveMirror
         /// <param name="clientId">The client who sent the data</param>
         /// <param name="segmentData">The binary data</param>
         /// <param name="channel">The channel the client sent the data on</param>
-        public void HandleMessage(int clientId, ArraySegment<byte> segmentData, int channel)
+        public async void HandleMessage(int clientId, ArraySegment<byte> segmentData, int channel)
         {
             OpCodes opcode = OpCodes.Default;
             
@@ -48,7 +48,7 @@ namespace LightReflectiveMirror
                             Program.WriteLogMessage($"Client {clientId} sent wrong auth key! Removing from LRM node.");
                             Program.transport.ServerDisconnect(clientId);
                         }
-                        
+
                         // Later retrieve firebase id from firebase token
                         string uniqueId = firebaseToken;
                         
@@ -56,6 +56,15 @@ namespace LightReflectiveMirror
                         if (Program.instance.IsClientConnected(uniqueId))
                         {
                             Program.WriteLogMessage($"Client {clientId} is already connected to this node! Removing from LRM node.");
+                            Program.transport.ServerDisconnect(clientId);
+                            return;
+                        }
+
+                        // Check client's Firebase token
+                        var authenticated = await _authenticator.AuthenticateClient(firebaseToken);
+                        if (!authenticated)
+                        {
+                            Program.WriteLogMessage($"Client {clientId} failed Firebase authentication! Removing from LRM node.");
                             Program.transport.ServerDisconnect(clientId);
                             return;
                         }

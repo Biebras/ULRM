@@ -1,4 +1,5 @@
-﻿using System.Buffers;
+﻿using LRM;
+using System.Buffers;
 using System.Collections.Generic;
 
 namespace LightReflectiveMirror
@@ -13,6 +14,8 @@ namespace LightReflectiveMirror
         private Dictionary<string, Room> _cachedRooms = new();
 
         private System.Random _cachedRandom = new();
+
+        private FirebaseAuthenticator _authenticator = new();
     }
 
     public enum OpCodes

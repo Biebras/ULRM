@@ -63,13 +63,23 @@ namespace LightReflectiveMirror
                         // Check if the client is already connected to this node.
                         if (Program.instance.IsClientConnected(uniqueId))
                         {
+                            // TODO For now we ignore this for testing
+                            
+                            /*
                             Program.WriteLogMessage($"Client {clientId} is already connected to this node! Removing from LRM node.");
                             Program.transport.ServerDisconnect(clientId);
                             return;
+                            */
                         }
 
                         _pendingAuthentication.Remove(clientId);
-                        Program.instance.AssignUniqueId(uniqueId, clientId);
+                        try
+                        {
+                            Program.instance.AssignUniqueId(uniqueId, clientId);
+                        } catch (ArgumentException)
+                        {
+                            // TODO Ignore for now, we will allow multiple connections from the same user for testing
+                        }
                         
                         int writePos = 0;
                         var sendBuffer = _sendBuffers.Rent(1);

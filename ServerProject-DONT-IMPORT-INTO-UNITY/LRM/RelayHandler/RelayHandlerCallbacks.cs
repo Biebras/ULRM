@@ -11,6 +11,13 @@ namespace LightReflectiveMirror
         /// <param name="clientId">The ID of the client who connected.</param>
         public void ClientConnected(int clientId)
         {
+            int connections = Program.instance.GetConnections();
+            if (connections >= Program.conf.MaxConnections)
+            {
+                Program.WriteLogMessage($"Cannot add client {clientId} because server already has {connections} connections.");
+                Program.transport.ServerDisconnect(clientId);
+            }
+            
             _pendingAuthentication.Add(clientId);
             var buffer = _sendBuffers.Rent(1);
             int pos = 0;

@@ -16,6 +16,7 @@ namespace LightReflectiveMirror
         public ushort TransportPort = 7777;
         public int UpdateLoopTime = 10;
         public int UpdateHeartbeatInterval = 100;
+        public int MaxConnections = 180;
  
         // this wont be used if you are using load balancer
         // load balancer will generate instead.

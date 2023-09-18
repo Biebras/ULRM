@@ -49,6 +49,7 @@ namespace LightReflectiveMirror
                     conf.TransportPort = ushort.Parse(Environment.GetEnvironmentVariable("TRANSPORT_PORT") ?? "7777");
                     conf.UpdateLoopTime = int.Parse(Environment.GetEnvironmentVariable("UPDATE_LOOP_TIME") ?? "10");
                     conf.UpdateHeartbeatInterval = int.Parse(Environment.GetEnvironmentVariable("UPDATE_HEARTBEAT_INTERVAL") ?? "100");
+                    conf.MaxConnections = int.Parse(Environment.GetEnvironmentVariable("MAX_CONNECTIONS") ?? "180");
                     conf.RandomlyGeneratedIDLength = int.Parse(Environment.GetEnvironmentVariable("RANDOMLY_GENERATED_ID_LENGTH") ?? "5");
                     conf.UseEndpoint = bool.Parse(Environment.GetEnvironmentVariable("USE_ENDPOINT") ?? "true");
                     conf.EndpointPort = ushort.Parse(Environment.GetEnvironmentVariable("ENDPOINT_PORT") ?? "8080");
